@@ -29,3 +29,14 @@ export async function DELETE(request) {
 
   return NextResponse.json({ message: "Todo Deleted" });
 }
+
+export async function PUT(request) {
+  const id = request.nextUrl.searchParams.get("id");
+
+  await TodoModel.findByIdAndUpdate(id, {
+    $set: {
+      isCompleted: true,
+    },
+  });
+  return NextResponse.json({ message: "Todo Updated" });
+}

@@ -25,7 +25,20 @@ export default function Home() {
       },
     });
     toast.success(response.data.message);
-    await fetchTodos();
+    fetchTodos();
+  };
+  const updateTodo = async (id) => {
+    const response = await axios.put(
+      `/api`,
+      {},
+      {
+        params: {
+          id: id,
+        },
+      }
+    );
+    toast.success(response.data.message);
+    fetchTodos();
   };
 
   useEffect(() => {
@@ -84,7 +97,7 @@ export default function Home() {
         </button>
       </form>
 
-      <div className="relative overflow-x-auto mt-24 w-[60%] mx-auto">
+      <div className="relative overflow-x-auto mt-24 w-[60%] mx-auto py-6">
         <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
           <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
             <tr>
@@ -116,6 +129,7 @@ export default function Home() {
                   complete={item.isCompleted}
                   mongoId={item._id}
                   deleteTodo={deleteTodo}
+                  updateTodo={updateTodo}
                 />
               );
             })}
