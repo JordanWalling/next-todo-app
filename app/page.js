@@ -1,8 +1,9 @@
 "use client";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Todo from "@/components/Todo";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import axios from "axios";
 
 export default function Home() {
   const [formData, setFormData] = useState({
@@ -10,6 +11,16 @@ export default function Home() {
     description: "",
   });
 
+  const [todoData, setTodoData] = useState([]);
+
+  const fetchTodos = async () => {
+    const response = await axios("/api");
+    setTodoData(response.data.todos);
+  };
+
+  useEffect(() => {
+    fetchTodos();
+  }, []);
   const onChangeHandler = (e) => {
     const name = e.target.name;
     const value = e.target.value;
@@ -25,8 +36,13 @@ export default function Home() {
     e.preventDefault();
     try {
       // api code
-
-      toast.success("Success");
+      const response = await axios.post("/api", formData);
+      toast.success(response.data.message);
+      setFormData({
+        title: "",
+        description: "",
+      });
+      await fetchTodos();
     } catch (error) {
       toast.error("Error");
     }
@@ -80,9 +96,18 @@ export default function Home() {
             </tr>
           </thead>
           <tbody>
-            <Todo />
-            <Todo />
-            <Todo />
+            {todoData.map((item, index) => {
+              return (
+                <Todo
+                  key={index}
+                  title={item.title}
+                  id={index}
+                  description={item.description}
+                  complete={item.isCompleted}
+                  mongoId={item._id}
+                />
+              );
+            })}
           </tbody>
         </table>
       </div>
