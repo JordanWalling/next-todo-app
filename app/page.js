@@ -25,6 +25,7 @@ export default function Home() {
     e.preventDefault();
     try {
       // api code
+
       toast.success("Success");
     } catch (error) {
       toast.error("Error");
