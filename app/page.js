@@ -25,7 +25,7 @@ export default function Home() {
       },
     });
     toast.success(response.data.message);
-    fetchTodos();
+    await fetchTodos();
   };
 
   useEffect(() => {
