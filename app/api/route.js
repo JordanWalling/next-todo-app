@@ -21,3 +21,11 @@ export async function POST(request) {
   });
   return NextResponse.json({ message: "Todo Created" });
 }
+
+export async function DELETE(request) {
+  const id = request.nextUrl.searchParams.get("id");
+
+  await TodoModel.findByIdAndDelete(id);
+
+  return NextResponse.json({ message: "Todo Deleted" });
+}
